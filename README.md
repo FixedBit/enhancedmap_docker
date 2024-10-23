@@ -1,5 +1,5 @@
 # Info
-This is a docker container setup for (EnhancedMap)[https://github.com/andreakarasho/EnhancedMap]
+This is a docker container setup for [EnhancedMap](https://github.com/andreakarasho/EnhancedMap)
 
 # Instructions
 Just go into the directory you cloned it into and run `docker compose build && docker compose up -d` and it will build it and start it up for you.
