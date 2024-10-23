@@ -1,0 +1,13 @@
+
+services:
+  enhancedmap:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8887:8887"
+    container_name: enhancedmap_runtime
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./data:/app/Data     # Map local './data' directory to '/app/Data' in the container
