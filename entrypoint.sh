@@ -14,9 +14,10 @@ if [ ! -p /tmp/server_input ]; then
 fi
 touch /tmp/server_output
 
-# Function to generate a random password
+# Function to generate a random password with special characters
 generate_random_password() {
-    echo "$(openssl rand -base64 12)"
+    # Use tr to remove characters that may cause issues in shell or file usage
+    echo "$(openssl rand -base64 10 | tr -dc 'a-zA-Z0-9@#$%^&*()_+[]{}|;:,.<>?')"
 }
 
 # Function to start the EnhancedMap server
@@ -24,12 +25,11 @@ start_server() {
   # Start the EnhancedMap server with input from the named pipe and log output to /tmp/server_output
   tail -f /tmp/server_input | dotnet /app/EnhancedMapServer.dll > /tmp/server_output 2>&1 &
   
-  # Wait for the server to fully start
-  sleep 5
-  
   # Check if configuration files exist, if not, run the /adduser and /save commands to set up the initial user and config
   if [ ! -f "$SERVER_CONFIG" ] || [ ! -f "$ROOMS_CONFIG" ] || [ ! -f "$ACCOUNTS_CONFIG" ]; then
-      echo "Config files not found, setting up user 'uomap' and saving config."
+      echo "Sleeping for 5 seconds to allow the server to start, then doing our initial setup..."
+
+      sleep 5
 
       # Generate a random password
       RANDOM_PASSWORD=$(generate_random_password)
